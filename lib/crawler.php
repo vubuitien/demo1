@@ -35,14 +35,15 @@
 
 		function showvnn(){
 			$this->conn();
-			$this->show = $this->db->query("SELECT * FROM vnn");
+			$this->post = 'vnn';
+			$this->show = $this->db->query("SELECT * FROM $this->post");
 			$this->show->execute();
 		}
 
 		function save(){
 			$this->conn();
 
-			$this->sql = "INSERT INTO vnn (title, content) VALUES ('$this->title', '$this->content')";
+			$this->sql = "INSERT INTO $this->post (title, content) VALUES ('$this->title', '$this->content')";
 			$this->db->exec($this->sql);
 		}
 

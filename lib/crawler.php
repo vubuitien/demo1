@@ -1,27 +1,75 @@
 <?php 
-	require_once('db.php');
-	class Crawler
+
+	class DB{
+		private $host = "localhost"; 	
+		private $dbname = "clawler";
+		private $username = "root";
+		private $pass = "";
+		protected $connec;
+
+		public function connect(){
+			if(!isset($this->connec)){
+				$this->connec = new mysqli($this->host, $this->username, $this->pass, $this->dbname);
+				mysqli_set_charset($this->connec, 'utf8');
+				if(!$this->connec){
+					echo "ket noi false";
+					exit;
+				}
+			}
+			return $this->connec;
+		}
+	}
+
+	class Crawler extends DB
 	{
 		public $tits;
 		public $contents;
 		public $show;
-		public $db;
 		public $sql;
 		public $url;
 		public $title;
+		public $getlink;
 		public $content;
+		public $post;
 		public $ch;
 		public $ketqua;
 		public $link;
-		private $host = DB_HOST; 	
-		private $dbname = DB_NAME;
-		private $username = DB_USERNAME;
-		private $pass = DB_PASSWORD;
 
-		function conn(){
-
-			$this->db = new PDO("mysql:host=$this->host;dbname=$this->dbname", $this->username, $this->pass);
+		public function __construct()
+		{
+			parent::connect();
 		}
+
+		//Phương thức lấy dữ liệu từ CSDL
+		public function getData($query){
+			$result = $this->connec->query($query);
+			if($result == false){
+				return false;
+			}
+
+			$row = array();
+			while($row=$result->fetch_assoc()){
+				$rows[] = $row;
+			}
+			return $rows;
+		}
+		// Phương thức thực thi lệnh truy vấn
+		function execute($query){
+			$result = $this->connec->query($query);
+			if($result == false){
+				return false;
+			}else{
+				return true;
+			}
+		}
+
+		// Lấy dữ liệu trong link website
+
+		function get_link(){
+			$this->url = $this->link;
+			echo $this->crawl();
+		}
+
 		function crawl(){
 			$ch = curl_init();
 			curl_setopt($ch,CURLOPT_URL,$this->url);
@@ -32,62 +80,11 @@
 			ini_set('error_log','php-error.log');
 			curl_close($ch);
 		}
-
-		function showvnn(){
-			$this->conn();
-			$this->post = 'vnn';
-			$this->show = $this->db->query("SELECT * FROM $this->post");
-			$this->show->execute();
-		}
-
-		function save(){
-			$this->conn();
-
-			$this->sql = "INSERT INTO $this->post (title, content) VALUES ('$this->title', '$this->content')";
-			$this->db->exec($this->sql);
-		}
-
-		function get_link(){
-			$this->url = $this->link;
-			echo $this->crawl();
-		}
-
-		function savedb(){
-			if(isset($_POST['savevnn'])){
-				$this->title = $_POST['savetitvnn'];
-				$this->content = $_POST['saveconvnn'];
-				$this->save($title,$content);
-				exit(header("Location: ./vnn.php"));
-			}
-		}
-/*
-		function get_info_vnx(){
-	    	$this->get_link();
-		    preg_match('/\<h1 class="title_news_detail mb10".*\>(.*)\<\/h1\>/isU', $this->ketqua, $tit_vnx);
-			preg_match('/\<article class="content_detail fck_detail width_common block_ads_connect".*\>(.*)\<\/article\>/isU', $this->ketqua, $content_vnx);
-		    $this->tits = $tit_vnx[1];
-		    $this->contents = $content_vnx[1];
-
-		}
-
-		function get_info_vnnet(){
-	    	$this->get_link();
-		    preg_match('/\<h1 class="title".*\>(.*)\<\/h1\>/isU', $this->ketqua, $tit_vnn);
-			preg_match('/\<div id="ArticleContent" class="ArticleContent".*\>(.*)\<\/div\>/isU', $this->ketqua, $content_vnn);
-		    $this->tits = $tit_vnn[1];
-		    $this->contents = $content_vnn[1];
-		}
-*/
-		function show_dl(){
-			if(isset($_POST['getlink'])){
-				$this->link = $_POST['getlink'];
-				$this->get_link();
-			}
-		}
+		// End
 		
 	}
 
-	class ClawlerVNX extends Crawler
+	class ClawlerVN extends Crawler
 	{	
 		function get_info_vnx(){
 	    	$this->get_link();
@@ -95,13 +92,8 @@
 			preg_match('/\<article class="content_detail fck_detail width_common block_ads_connect".*\>(.*)\<\/article\>/isU', $this->ketqua, $content_vnx);
 		    $this->tits = $tit_vnx[1];
 		    $this->contents = $content_vnx[1];
-
 		}
-		
-	}
-
-	class ClawlerVNN extends Crawler
-	{	
+			
 		function get_info_vnnet(){
 	    	$this->get_link();
 		    preg_match('/\<h1 class="title".*\>(.*)\<\/h1\>/isU', $this->ketqua, $tit_vnn);

@@ -1,6 +1,6 @@
 <?php 
-  include('lib/crawler.php');
-  require_once('lib/db.php');
+
+  include('button.php');
 ?>
 <!DOCTYPE html>
 <html>
@@ -14,10 +14,8 @@
 </head>
 <body>
 <?php 
-  $test = new Crawler;
-  $test->showvnn();
+  $test = new Button;
   $test->show_dl();
-  $test->savedb();
 
   if(isset($_POST['check'])){
     if($_POST['check'] == 2){
@@ -65,6 +63,14 @@
         <textarea rows="5" class="form-control" name="saveconvnn"><?php echo $test->contents ?></textarea>
         <br>
         <button class="btn btn-primary" type="submit" name="savevnn">Lưu data</button>
+        <?php
+            if(isset($_POST['savevnn'])){
+              $title = $_POST['savetitvnn'];
+              $content = $_POST['saveconvnn'];
+              $test->execute("INSERT INTO vnn (title, content) VALUES ('$title', '$content')");
+              exit(header("Location: ./index.php"));
+            }
+        ?>
   </form>
 </div>
   <table class="table">
@@ -76,7 +82,13 @@
       </tr>
     </thead>
     <tbody>
-      <?php foreach ($test->show as $key) { ?>
+      <?php 
+          $test = new Button;
+          $sql = "SELECT * FROM vnn";
+          $result = $test->getData($sql);
+
+          foreach ($result as $key) {
+      ?>
         <tr>
           <td><?= $key['id']?></td>
           <td><?= $key['title']?></td>

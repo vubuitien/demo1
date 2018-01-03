@@ -1,6 +1,6 @@
 <?php 
-
-  include('button.php');
+  include('lib/crawler.php');
+  require_once('lib/db.php');
 ?>
 <!DOCTYPE html>
 <html>
@@ -14,16 +14,17 @@
 </head>
 <body>
 <?php 
-  $test = new Button;
+  $test = new Crawler;
   $test->show_dl();
+  $result = $test->showdb('SELECT * FROM vnn');
 
   if(isset($_POST['check'])){
     if($_POST['check'] == 2){
-      $test->get_info_vnnet();
+      $test->get_info('/\<h1 class="title".*\>(.*)\<\/h1\>/isU', '/\<div id="ArticleContent" class="ArticleContent".*\>(.*)\<\/div\>/isU');
     }else if($_POST['check'] == 1){
-      $test->get_info_vnx();
-    }
+      $test->get_info('/\<h1 class="title_news_detail mb10".*\>(.*)\<\/h1\>/isU', '/\<article class="content_detail fck_detail width_common block_ads_connect".*\>(.*)\<\/article\>/isU');
   }
+}
 ?>
 <div class="container">
 <nav class="navbar navbar-inverse">
@@ -63,13 +64,23 @@
         <textarea rows="5" class="form-control" name="saveconvnn"><?php echo $test->contents ?></textarea>
         <br>
         <button class="btn btn-primary" type="submit" name="savevnn">Lưu data</button>
-        <?php
-            if(isset($_POST['savevnn'])){
-              $title = $_POST['savetitvnn'];
-              $content = $_POST['saveconvnn'];
-              $test->execute("INSERT INTO vnn (title, content) VALUES ('$title', '$content')");
+        <?php 
+          if(isset($_POST["savevnn"])){
+            $insert_data = array(
+                'title' => mysqli_real_escape_string($test->conn, $_POST['savetitvnn']),
+                'content' => mysqli_real_escape_string($test->conn, $_POST['saveconvnn']),
+              );
+            if($test->save('vnn', $insert_data)){
+              $msg = "Thêm thành công";
               exit(header("Location: ./index.php"));
             }
+          }
+
+        ?>
+        <?php 
+          if(isset($msg)){
+            echo $msg;
+          }
         ?>
   </form>
 </div>
@@ -82,13 +93,7 @@
       </tr>
     </thead>
     <tbody>
-      <?php 
-          $test = new Button;
-          $sql = "SELECT * FROM vnn";
-          $result = $test->getData($sql);
-
-          foreach ($result as $key) {
-      ?>
+      <?php foreach ($result as $key) { ?>
         <tr>
           <td><?= $key['id']?></td>
           <td><?= $key['title']?></td>

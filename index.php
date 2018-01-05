@@ -1,8 +1,7 @@
 <?php 
   include("lib/crawler.php");
-  include_once("lib/vncrawler.php");
   include("lib/vxcrawler.php");
-
+  include_once("lib/vncrawler.php");
 ?>
 <!DOCTYPE html>
 <html>

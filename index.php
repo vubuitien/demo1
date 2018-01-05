@@ -1,6 +1,8 @@
 <?php 
-  include('lib/crawler.php');
-  require_once('lib/db.php');
+  include("lib/crawler.php");
+  include_once("lib/vncrawler.php");
+  include("lib/vxcrawler.php");
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -15,16 +17,22 @@
 <body>
 <?php 
   $test = new Crawler;
-  $test->show_dl();
-  $result = $test->showdb('SELECT * FROM vnn');
 
-  if(isset($_POST['check'])){
-    if($_POST['check'] == 2){
-      $test->get_info('/\<h1 class="title".*\>(.*)\<\/h1\>/isU', '/\<div id="ArticleContent" class="ArticleContent".*\>(.*)\<\/div\>/isU');
-    }else if($_POST['check'] == 1){
-      $test->get_info('/\<h1 class="title_news_detail mb10".*\>(.*)\<\/h1\>/isU', '/\<article class="content_detail fck_detail width_common block_ads_connect".*\>(.*)\<\/article\>/isU');
-  }
-}
+  $result = $test->getContents('SELECT * FROM vnn');
+
+  $crawler_sources = array ('vnexpress' => 'VXCrawler','vietnamnnet' => 'VNCrawler');
+    if (isset($_POST['gettlink'])) {
+        $test->show_dl();
+      if($_POST['check'] == 1){
+        $source = 'vnexpress';
+      }
+      else if($_POST['check'] == 2){
+        $source = 'vietnamnnet';
+      }
+
+      $test1= new $crawler_sources[$source];
+      $test1->get_info();
+    }
 ?>
 <div class="container">
 <nav class="navbar navbar-inverse">
@@ -57,11 +65,14 @@
   </form>
 </div>
 <div class="form-group">
-  <form action="" method="post">
+  <?php 
+      if (isset($_POST['gettlink'])) {
+   ?>
+<form action="" method="post">
         <label for="usr">Title</label>
-        <input type="text" class="form-control" name="savetitvnn" value="<?php echo $test->tits ?>">
+        <input type="text" class="form-control" name="savetitvnn" value="<?php echo $test1->tits ?>">
         <label for="usr">Content</label>
-        <textarea rows="5" class="form-control" name="saveconvnn"><?php echo $test->contents ?></textarea>
+        <textarea rows="5" class="form-control" name="saveconvnn"><?php echo $test1->contents ?></textarea>
         <br>
         <button class="btn btn-primary" type="submit" name="savevnn">Lưu data</button>
         <?php 
@@ -83,6 +94,10 @@
           }
         ?>
   </form>
+
+   <?php 
+ }
+    ?>
 </div>
   <table class="table">
     <thead>

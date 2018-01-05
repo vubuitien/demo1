@@ -38,6 +38,7 @@
 		}
 
 		function crawl(){
+			$this->url = $_POST["getlink"];
 			$ch = curl_init($this->url);
 			curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 			$this->ketqua=curl_exec($ch);
@@ -47,12 +48,11 @@
 
 
 			curl_close($ch);
-			$this->url = $this->link;
-			$this->link = $_POST['getlink'];
 		}
 
 		function save($table, $data){
 			$this->connectdb();
+			$string = "";
 			$string = "INSERT INTO ".$table." (";
 			$string .= implode(",", array_keys($data)) . ') VALUES (';
 			$string .= "'" . implode("','", array_values($data)) ."')";

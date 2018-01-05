@@ -50,17 +50,11 @@
 			curl_close($ch);
 		}
 
-		function save($table, $data){
+		function save($string){
 			$this->connectdb();
-			$string = "";
-			$string = "INSERT INTO ".$table." (";
-			$string .= implode(",", array_keys($data)) . ') VALUES (';
-			$string .= "'" . implode("','", array_values($data)) ."')";
 
 			$query = mysqli_query($this->conn, $string);
-			if($query){
-				return true;
-			}
+
 
 		}
 	}

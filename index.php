@@ -20,14 +20,14 @@
 
   $result = $test->getContents('SELECT * FROM vnn');
 
-  $crawler_sources = array ('vnexpress' => 'VXCrawler','vietnamnnet' => 'VNCrawler');
+  $crawler_sources = array ('vne' => 'VXCrawler','vnn' => 'VNCrawler');
     if (isset($_POST['gettlink'])) {
         $test->show_dl();
       if($_POST['check'] == 1){
-        $source = 'vnexpress';
+        $source = 'vne';
       }
       else if($_POST['check'] == 2){
-        $source = 'vietnamnnet';
+        $source = 'vnn';
       }
 
       $test1= new $crawler_sources[$source];

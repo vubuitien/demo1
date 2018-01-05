@@ -1,5 +1,4 @@
 <?php 
-	require_once('db.php');
 	
 	class Crawler
 	{
@@ -16,10 +15,10 @@
 		public $titvn;
 		public $ketqua;
 		public $link;
-		private $host = DB_HOST; 	
-		private $dbname = DB_NAME;
-		private $username = DB_USERNAME;
-		private $pass = DB_PASSWORD;
+		public $host; 	
+		public $dbname;
+		public $username;
+		public $pass;
 
 		function connectdb(){
 
@@ -59,14 +58,15 @@
 		}
 
 		function save($table, $data){
+			$this->connectdb();
+			$string = "";
 			$string = "INSERT INTO ".$table." (";
 			$string .= implode(",", array_keys($data)) . ') VALUES (';
 			$string .= "'" . implode("','", array_values($data)) ."')";
 
-			if(mysqli_query($this->conn, $string)){
+			$query = mysqli_query($this->conn, $string);
+			if($query){
 				return true;
-			}else{
-				echo mysqli_error($this->conn);
 			}
 
 		}

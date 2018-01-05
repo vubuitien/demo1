@@ -47,18 +47,12 @@
 
 
 			curl_close($ch);
-		}
-
-		function show_dl(){
-			$this->link = $_POST['getlink'];
 			$this->url = $this->link;
-			$this->crawl();
-			
+			$this->link = $_POST['getlink'];
 		}
 
 		function save($table, $data){
 			$this->connectdb();
-			$string = "";
 			$string = "INSERT INTO ".$table." (";
 			$string .= implode(",", array_keys($data)) . ') VALUES (';
 			$string .= "'" . implode("','", array_values($data)) ."')";

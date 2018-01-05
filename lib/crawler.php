@@ -1,5 +1,5 @@
 <?php 
-	
+
 	class Crawler
 	{
 		public $tits;
@@ -15,13 +15,12 @@
 		public $titvn;
 		public $ketqua;
 		public $link;
-		public $host; 	
-		public $dbname;
-		public $username;
-		public $pass;
+		private $host = DB_HOST; 	
+		private $dbname = DB_NAME;
+		private $username = DB_USERNAME;
+		private $pass = DB_PASSWORD;
 
 		function connectdb(){
-
 			$this->conn = new mysqli($this->host, $this->username, $this->pass, $this->dbname);
 		}
 		

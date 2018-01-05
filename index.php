@@ -1,4 +1,5 @@
 <?php 
+  require_once('./db.php');
   include("lib/crawler.php");
   include_once("lib/vncrawler.php");
   include("lib/vxcrawler.php");
@@ -17,35 +18,18 @@
 <body>
 <?php 
   $test = new Crawler;
-  $test->host = 'localhost';
-  $test->dbname = 'crawler';
-  $test->username = 'root';
-  $test->pass = ''; 
-
   $result = $test->getContents('SELECT * FROM vnn');
 
   $crawler_sources = array ('vne' => 'VXCrawler','vietnam' => 'VNCrawler');
     if (isset($_POST['gettlink'])) {
         $test->show_dl();
-      if($_POST['check'] == 1){
-        $source = 'vne';
-      }
-      else if($_POST['check'] == 2){
-        $source = 'vietnam';
-      }
+      $source = $_POST['check'];
 
       $test1= new $crawler_sources[$source];
       $test1->get_info();
     }
 
-  if(isset($_POST["savevnn"])){
-    $return = array(
-      "title" => $_POST["savetitvnn"],
-      "content" => $_POST["saveconvnn"]
-    );
-    $test->save("vnn", $return);
-    header('Location: ./index.php');
-  }
+
 ?>
 <div class="container">
 <nav class="navbar navbar-inverse">
@@ -69,8 +53,8 @@
       <br>
       <label>Nguồn dữ liệu:</label>
       <select class="form-control" name="check">
-        <option value="1">Vnexpress</option>
-        <option value="2">Vietnamnet</option>
+        <option value="vne">Vnexpress</option>
+        <option value="vietnam">Vietnamnet</option>
       </select>
       <br>
       <button class="btn btn-success" type="submit" name="gettlink">GET</button>
@@ -78,6 +62,18 @@
   </form>
 </div>
 <div class="form-group">
+  
+  <?php 
+      if(isset($_POST["savevnn"])){
+        $return = array(
+          "title" => $_POST["savetitvnn"],
+          "content" => $_POST["saveconvnn"]
+        );
+        $test->save("vnn", $return);
+        header('Location: ./index.php');
+      } 
+   ?>
+
   <?php 
       if (isset($_POST['gettlink'])) {
    ?>
@@ -87,18 +83,13 @@
         <label for="usr">Content</label>
         <textarea rows="5" class="form-control" name="saveconvnn"><?php echo $test1->contents ?></textarea>
         <br>
-        <button class="btn btn-primary" type="submit" name="savevnn">Lưu data</button>
-        <?php 
-
-
-        ?>
+        <button class="btn btn-primary" type="submit" name="savevnn">Lưu data</button>     
         <?php 
           if(isset($msg)){
             echo $msg;
           }
         ?>
   </form>
-
    <?php 
  }
     ?>

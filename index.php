@@ -1,7 +1,8 @@
 <?php 
   include("lib/crawler.php");
-  include("lib/vxcrawler.php");
   include_once("lib/vncrawler.php");
+  include("lib/vxcrawler.php");
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -16,22 +17,35 @@
 <body>
 <?php 
   $test = new Crawler;
+  $test->host = 'localhost';
+  $test->dbname = 'crawler';
+  $test->username = 'root';
+  $test->pass = ''; 
 
   $result = $test->getContents('SELECT * FROM vnn');
 
-  $crawler_sources = array ('vne' => 'VXCrawler','vnn' => 'VNCrawler');
+  $crawler_sources = array ('vne' => 'VXCrawler','vietnam' => 'VNCrawler');
     if (isset($_POST['gettlink'])) {
         $test->show_dl();
       if($_POST['check'] == 1){
         $source = 'vne';
       }
       else if($_POST['check'] == 2){
-        $source = 'vnn';
+        $source = 'vietnam';
       }
 
       $test1= new $crawler_sources[$source];
       $test1->get_info();
     }
+
+  if(isset($_POST["savevnn"])){
+    $return = array(
+      "title" => $_POST["savetitvnn"],
+      "content" => $_POST["saveconvnn"]
+    );
+    $test->save("vnn", $return);
+    header('Location: ./index.php');
+  }
 ?>
 <div class="container">
 <nav class="navbar navbar-inverse">
@@ -75,16 +89,7 @@
         <br>
         <button class="btn btn-primary" type="submit" name="savevnn">Lưu data</button>
         <?php 
-          if(isset($_POST["savevnn"])){
-            $insert_data = array(
-                'title' => mysqli_real_escape_string($test->conn, $_POST['savetitvnn']),
-                'content' => mysqli_real_escape_string($test->conn, $_POST['saveconvnn']),
-              );
-            if($test->save('vnn', $insert_data)){
-              $msg = "Thêm thành công";
-              exit(header("Location: ./index.php"));
-            }
-          }
+
 
         ?>
         <?php 

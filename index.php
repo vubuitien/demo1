@@ -29,7 +29,6 @@
       $test1->get_info();
     }
 
-
 ?>
 <div class="container">
 <nav class="navbar navbar-inverse">
@@ -65,11 +64,10 @@
   
   <?php 
       if(isset($_POST["savevnn"])){
-        $return = array(
-          "title" => $_POST["savetitvnn"],
-          "content" => $_POST["saveconvnn"]
-        );
-        $test->save("vnn", $return);
+          $titless = $_POST["savetitvnn"];
+          $contentss = $_POST["saveconvnn"];
+          $test->save("INSERT INTO vnn (title, content) VALUES ('$titless', '$contentss')");
+
         header('Location: ./index.php');
       } 
    ?>

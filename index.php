@@ -1,5 +1,5 @@
 <?php 
-  require_once('./db.php');
+  require_once('./button.php');
   include("lib/crawler.php");
   include_once("lib/vncrawler.php");
   include("lib/vxcrawler.php");
@@ -22,7 +22,7 @@
 
   $crawler_sources = array ('vne' => 'VXCrawler','vietnam' => 'VNCrawler');
     if (isset($_POST['gettlink'])) {
-        $test->show_dl();
+        $test->crawl();
       $source = $_POST['check'];
 
       $test1= new $crawler_sources[$source];

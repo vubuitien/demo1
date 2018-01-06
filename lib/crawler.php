@@ -14,18 +14,27 @@
 		public $titvn;
 		public $ketqua;
 		public $link;
-		private $host = DB_HOST; 	
-		private $dbname = DB_NAME;
-		private $username = DB_USERNAME;
-		private $pass = DB_PASSWORD;
+		public $host; 	
+		public $dbname;
+		public $username;
+		public $pass;
 		public $type = '';
 		public $tit = 'title';
 		public $con = 'content';
 
+		public function __construct($host, $username, $pass, $dbname){
+			$this->host = $host;
+			$this->username = $username; 
+			$this->pass = $pass;
+			$this->dbname = $dbname;
+		}
+
 		protected function _connectdb(){
 			$this->conn = new mysqli($this->host, $this->username, $this->pass, $this->dbname);
 		}
+
 		
+
 		function getContents($sql){
 			$this->_connectdb();
 			$result = mysqli_query($this->conn, $sql);
@@ -34,6 +43,7 @@
 	            $return[] = $row;
 	        }
 	        return $return;
+	        mysql_close($this->conn);
 		}
 
 		function crawl(){

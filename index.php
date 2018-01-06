@@ -16,19 +16,21 @@
 </head>
 <body>
 <?php 
-  $test = new Crawler;
-  $result = $test->getContents('SELECT * FROM vnn');
- 
-  $crawler_sources = array ('vne' => 'VXCrawler','vietnam' => 'VNCrawler');
+  $test = new Crawler(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
+    $result = $test->getContents('SELECT * FROM vnn');
+    $crawler_sources = array ('vne' => 'VXCrawler','vietnam' => 'VNCrawler');
     if (isset($_POST['gettlink'])) {
-
       $source = $_POST['check'];
-      $test1= new $crawler_sources[$source];
+      $test1= new $crawler_sources[$source](DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
+
       $test1->crawl();
-      $test1->url = ($_POST['getlink']);
+      $test1->url = $_POST['getlink'];
+      
       $test1->parse();
+
       $test1->save();
     }
+
 ?>
 <div class="container">
 <nav class="navbar navbar-inverse">

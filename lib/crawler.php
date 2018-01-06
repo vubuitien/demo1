@@ -61,6 +61,7 @@
 
 			$string = "INSERT INTO $this->type($this->tit, $this->con) VALUES ('$this->tits', '$this->contents')";
 			$query = mysqli_query($this->conn, $string);
+			mysql_close($this->conn);
 		}
 	}
 ?>

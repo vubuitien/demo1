@@ -1,9 +1,8 @@
 <?php 
-  require_once('./button.php');
   include("lib/crawler.php");
   include_once("lib/vncrawler.php");
   include("lib/vxcrawler.php");
-
+  include("./db.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,16 +18,17 @@
 <?php 
   $test = new Crawler;
   $result = $test->getContents('SELECT * FROM vnn');
-
+ 
   $crawler_sources = array ('vne' => 'VXCrawler','vietnam' => 'VNCrawler');
     if (isset($_POST['gettlink'])) {
-        $test->crawl();
+
       $source = $_POST['check'];
-
       $test1= new $crawler_sources[$source];
-      $test1->get_info();
+      $test1->crawl();
+      $test1->url = ($_POST['getlink']);
+      $test1->parse();
+      $test1->save();
     }
-
 ?>
 <div class="container">
 <nav class="navbar navbar-inverse">
@@ -61,16 +61,6 @@
   </form>
 </div>
 <div class="form-group">
-  
-  <?php 
-      if(isset($_POST["savevnn"])){
-          $titless = $_POST["savetitvnn"];
-          $contentss = $_POST["saveconvnn"];
-          $test->save("INSERT INTO vnn (title, content) VALUES ('$titless', '$contentss')");
-
-        header('Location: ./index.php');
-      } 
-   ?>
 
   <?php 
       if (isset($_POST['gettlink'])) {

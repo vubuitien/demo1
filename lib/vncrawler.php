@@ -1,6 +1,6 @@
 <?php 
-
 	include_once ('crawler.php');
+
 	class VNCrawler extends Crawler
 	{
 		public $type = 'vnn';

@@ -24,7 +24,7 @@
       $test1= new $crawler_sources[$source](DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
       $test1->crawl();
-      $test1->url = $_POST['getlink'];
+      $test1->setUrl($_POST['getlink']);
       
       $test1->parse();
 

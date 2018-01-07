@@ -59,21 +59,18 @@
   </form>
 </div>
 <div class="form-group">
-
   <?php 
       if (isset($_POST['gettlink'])){
-   ?>
-<form action="" method="post">
-        <label for="usr">Title</label>
-        <input type="text" class="form-control" name="savetitvnn" value="<?php echo $test1->tits ?>">
-        <label for="usr">Content</label>
-        <textarea rows="5" class="form-control" name="saveconvnn"><?php echo $test1->contents ?></textarea>
-        <br>
-        <button class="btn btn-primary" type="submit" name="savevnn">Lưu data</button>     
+  ?>
+  <form action="" method="post">
+      <label for="usr">Title</label>
+      <input type="text" class="form-control" name="savetitvnn" value="<?php echo $test1->tits ?>">
+      <label for="usr">Content</label>
+      <textarea rows="5" class="form-control" name="saveconvnn"><?php echo $test1->contents ?></textarea>
+      <br>
+      <button class="btn btn-primary" type="submit" name="savevnn">Lưu data</button>     
   </form>
-   <?php 
- }
-    ?>
+  <?php } ?>
 </div>
     <table class="table">
         <thead>

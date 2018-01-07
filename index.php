@@ -20,17 +20,13 @@
     $result = $test->getContents('SELECT * FROM vnn');
     $crawler_sources = array ('vne' => 'VXCrawler','vietnam' => 'VNCrawler');
     if (isset($_POST['gettlink'])) {
-      $source = $_POST['check'];
-      $test1= new $crawler_sources[$source](DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
-
-      $test1->crawl();
-      $test1->setUrl($_POST['getlink']);
-      
-      $test1->parse();
-
-      $test1->save();
+        $source = $_POST['check'];
+        $test1= new $crawler_sources[$source](DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
+        $test1->crawl();
+        $test1->setUrl($_POST['getlink']);
+        $test1->parse();
+        $test1->save();
     }
-
 ?>
 <div class="container">
 <nav class="navbar navbar-inverse">
@@ -65,7 +61,7 @@
 <div class="form-group">
 
   <?php 
-      if (isset($_POST['gettlink'])) {
+      if (isset($_POST['gettlink'])){
    ?>
 <form action="" method="post">
         <label for="usr">Title</label>
@@ -74,34 +70,29 @@
         <textarea rows="5" class="form-control" name="saveconvnn"><?php echo $test1->contents ?></textarea>
         <br>
         <button class="btn btn-primary" type="submit" name="savevnn">Lưu data</button>     
-        <?php 
-          if(isset($msg)){
-            echo $msg;
-          }
-        ?>
   </form>
    <?php 
  }
     ?>
 </div>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Title</th>
-        <th>Content</th>
-      </tr>
-    </thead>
-    <tbody>
-      <?php foreach ($result as $key) { ?>
-        <tr>
-          <td><?= $key['id']?></td>
-          <td><?= $key['title']?></td>
-          <td><?= $key['content']?></td>
-        </tr>
-      <?php } ?>    
-    </tbody>
-  </table>
+    <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Content</th>
+          </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($result as $key) { ?>
+                <tr>
+                    <td><?= $key['id']?></td>
+                    <td><?= $key['title']?></td>
+                    <td><?= $key['content']?></td>
+                </tr>
+            <?php } ?>    
+        </tbody>
+    </table>
 </div>
 </body>
 </html>

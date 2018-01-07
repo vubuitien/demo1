@@ -28,22 +28,20 @@
 			$this->pass = $pass;
 			$this->dbname = $dbname;
 		}
-
+		
 		protected function _connectdb(){
 			$this->conn = new mysqli($this->host, $this->username, $this->pass, $this->dbname);
 		}
-
 		
-
 		function getContents($sql){
 			$this->_connectdb();
 			$result = mysqli_query($this->conn, $sql);
-	    	$return = array();
-	    	while ($row = mysqli_fetch_assoc($result)){
-	            $return[] = $row;
-	        }
-	        return $return;
-	        mysql_close($this->conn);
+			$return = array();
+			while ($row = mysqli_fetch_assoc($result)){
+			    $return[] = $row;
+			}
+			return $return;
+			mysql_close($this->conn);
 		}
 
 		function setURL($url){
@@ -62,7 +60,6 @@
 
 		function save(){
 			$this->_connectdb();
-
 			$string = "INSERT INTO $this->type($this->tit, $this->con) VALUES ('$this->tits', '$this->contents')";
 			$query = mysqli_query($this->conn, $string);
 			mysql_close($this->conn);

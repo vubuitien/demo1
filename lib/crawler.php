@@ -6,7 +6,7 @@
 		public $show;
 		public $db;
 		public $sql;
-		public $url;
+		private $__url;
 		public $title;
 		public $content;
 		public $ch;
@@ -46,8 +46,12 @@
 	        mysql_close($this->conn);
 		}
 
+		function setURL($url){
+			$this->__url = $url;
+		}
+
 		function crawl(){
-			$ch = curl_init($this->url);
+			$ch = curl_init($this->__url);
 			curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 			$this->ketqua=curl_exec($ch);
 			ini_set('display_errors', 'off');

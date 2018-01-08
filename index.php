@@ -16,7 +16,7 @@
 </head>
 <body>
 <?php 
-  $test = new Crawler(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
+    $test = new Crawler(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
     $result = $test->getContents('SELECT * FROM vnn');
     $crawler_sources = array ('vne' => 'VXCrawler','vietnam' => 'VNCrawler');
     if (isset($_POST['gettlink'])) {

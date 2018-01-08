@@ -5,7 +5,7 @@
 		public $contents;
 		public $show;
 		public $db;
-		public $sql;
+		private $__sql;
 		private $__url;
 		public $title;
 		public $content;
@@ -33,9 +33,9 @@
 			$this->conn = new mysqli($this->host, $this->username, $this->pass, $this->dbname);
 		}
 		
-		function getContents($sql){
+		function getContents(){
 			$this->_connectdb();
-			$result = mysqli_query($this->conn, $sql);
+			$result = mysqli_query($this->conn, $this->__sql);
 			$return = array();
 			while ($row = mysqli_fetch_assoc($result)){
 			    $return[] = $row;
@@ -47,7 +47,11 @@
 		function setURL($url){
 			$this->__url = $url;
 		}
-
+		
+		function setSql($sql){
+			$this->__sql = $sql;	
+		}
+		
 		function crawl(){
 			$ch = curl_init($this->__url);
 			curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);

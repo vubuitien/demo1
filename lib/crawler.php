@@ -5,7 +5,7 @@
 		public $contents;
 		public $show;
 		public $db;
-		private $__sql;
+		public $sql;
 		private $__url;
 		public $title;
 		public $content;
@@ -35,7 +35,7 @@
 		
 		function getContents(){
 			$this->_connectdb();
-			$result = mysqli_query($this->conn, $this->__sql);
+			$result = mysqli_query($this->conn, $sql);
 			$return = array();
 			while ($row = mysqli_fetch_assoc($result)){
 			    $return[] = $row;
@@ -46,10 +46,6 @@
 
 		function setURL($url){
 			$this->__url = $url;
-		}
-		
-		function setSql($sql){
-			$this->__sql = $sql;	
 		}
 		
 		function crawl(){
